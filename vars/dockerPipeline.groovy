@@ -30,7 +30,7 @@ pipeline {
         DOCKER_CREDS = credentials('docker_creds')
     }
     stages{
-       stage ('AddMethod') {
+       stage ('MavenBuild') {
             when {
                 anyOf {
                     expression {
@@ -44,6 +44,7 @@ pipeline {
                 script {
                     //buildApp().call()
                     println docker.add(5,6)
+                    docker.buildApp("${env.APPLICATION_NAME}")
                 }
 
             }
