@@ -5,7 +5,6 @@ class K8s {
     K8s(jenkins) {
         this.jenkins = jenkins
     }
-}
 
         // Method to authenticate to kubernetes clusters
     def auth_login(gke_cluster_name, gke_zone, gke_project){
@@ -17,3 +16,4 @@ class K8s {
         kubectl get nodes
         """
     }
+}
