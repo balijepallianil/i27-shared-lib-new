@@ -16,3 +16,4 @@ class K8s {
         echo "********************** Get nodes in the Cluster **********************"
         kubectl get nodes
         """
+    }
