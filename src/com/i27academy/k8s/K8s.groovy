@@ -20,7 +20,7 @@ class K8s {
     def k8sdeploy(yamlFile, nameSpace){
         jenkins.sh """
         echo "K8s deploy"
-        kubectl apply -f ./cicd/$yamlFile -n $nameSpace
+        kubectl apply -f ./.cicd/$yamlFile -n $nameSpace
         """
     }
 }    

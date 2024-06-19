@@ -37,7 +37,7 @@ pipeline {
         GKE_DEV_CLUSTER_NAME = "cart-cluster"
         GKE_DEV_ZONE = "us-west1-a"
         GKE_DEV_PROJECT = "glass-approach-423807-a5"
-        K8S_DEV_FILE = "k8s_dev.yaml"
+        K8S_DEV_FILE = "k8s_dev.yaml"                 
         K8S_TST_FILE = "k8s_tst.yaml"
         DEV_NAMESPACE = "eureka-dev-ns"
     }
