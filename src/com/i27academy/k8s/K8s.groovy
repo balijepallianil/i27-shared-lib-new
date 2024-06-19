@@ -16,4 +16,11 @@ class K8s {
         kubectl get nodes
         """
     }
-}
+
+    def k8sdeploy(yamlFile, nameSpace){
+        jenkins.sh """
+        echo "K8s deploy"
+        kubectl apply -f ./cicd/$yamlFile -n $nameSpace
+        """
+    }
+}    

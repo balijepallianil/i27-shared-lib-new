@@ -17,6 +17,10 @@ pipeline {
                choices: 'no\nyes',
                description: "Docker Build and push to registry"
         )
+        choice (name: 'deployToDev',
+                choices: 'no\nyes',
+                description: "Deploy app in DEV"
+        )
     }    
 
     tools{
@@ -35,17 +39,17 @@ pipeline {
         GKE_DEV_PROJECT = "glass-approach-423807-a5"
         K8S_DEV_FILE = "k8s_dev.yaml"
         K8S_TST_FILE = "k8s_tst.yaml"
-        DEV_NAMESPACE = "cart-dev-ns"
+        DEV_NAMESPACE = "eureka-dev-ns"
     }
     stages{
-        stage ('Authentication') {
-                steps {
-                    echo "Executing in GCP project"
-                    script{
-                        k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
-                    }
-            }
-        }
+    //   stage ('Authentication') {
+    //           steps {
+    //               echo "Executing in GCP project"
+    //              script{
+    //                  k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
+     //               }
+      //      }
+       // }
        stage ('MavenBuild') {
             when {
                 anyOf {
@@ -80,6 +84,26 @@ pipeline {
 
             }
         }
+
+        stage ('Deploy To Dev') {
+            when {
+                anyOf {
+                    expression {
+                        params.deployToDev == 'yes'
+                    }
+                }
+            } 
+            steps {
+                script {
+                    imageValidation().call()
+                    //dockerDeploy('dev', '5761', '8761').call()
+                    k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
+                    k8s.k8sdeploy("${K8S_DEV_FILE}, ${K8S_TST_FILE}")
+                }
+                
+            }
+
+        }
     }
 }
 }
@@ -102,6 +126,20 @@ def dockerBuildandPush() {
         sh "docker login -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}"
         echo "********Docker Push******"
         sh "docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+    }
+}
+
+def imageValidation() {
+    return {
+        println ("pulling he docker Image")
+        try {
+            sh "docker pull ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+        } 
+        catch (Exception e) {
+            println("OOPS!!!!!, docker image with this tag doesnot exists, So creating the image")
+            buildApp().call()
+            dockerBuildandPush().call()
+        }
     }
 }
 
