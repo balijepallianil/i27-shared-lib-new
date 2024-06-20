@@ -17,9 +17,10 @@ class K8s {
         """
     }
 
-    def k8sdeploy(yamlFile, nameSpace){
+    def k8sdeploy(yamlFile, nameSpace, docker_image){
         jenkins.sh """
         echo "K8s deploy"
+        sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName
         kubectl apply -f ./.cicd/$yamlFile -n $nameSpace
         """
     }

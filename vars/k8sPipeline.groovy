@@ -39,7 +39,12 @@ pipeline {
         GKE_DEV_PROJECT = "glass-approach-423807-a5"
         K8S_DEV_FILE = "k8s_dev.yaml"                 
         K8S_TST_FILE = "k8s_tst.yaml"
+        K8S_STAGE_FILE = "k8s_stage.yaml"
+        K8S_PROD_FILE = "k8s_prod.yaml"
         DEV_NAMESPACE = "eureka-dev-ns"
+        TST_NAMESPACE = "cart-tst-ns"
+        STAGE_NAMESPACE = "cart-stage-ns"
+        PROD_NAMESPACE = "cart-prod-ns"
     }
     stages{
     //   stage ('Authentication') {
@@ -96,9 +101,11 @@ pipeline {
             steps {
                 script {
                     imageValidation().call()
+                    def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                     //dockerDeploy('dev', '5761', '8761').call()
                     k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
-                    k8s.k8sdeploy("${K8S_DEV_FILE}", "${DEV_NAMESPACE}")
+                    k8s.k8sdeploy("${K8S_DEV_FILE}", "${DEV_NAMESPACE}", docker_image)
+                    echo "Deployed to DEV Environment Succesfully!!!"
                 }
                 
             }
