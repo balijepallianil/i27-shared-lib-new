@@ -57,9 +57,8 @@ pipeline {
         TST_NAMESPACE = "i27-test-ns"
         STAGE_NAMESPACE = "i27-stage-ns"
         PROD_NAMESPACE = "i27-prod-ns"
-        HELM_PATH = 
     }
-    stages{
+    stages {
     //   stage ('Authentication') {
     //           steps {
     //               echo "Executing in GCP project"
@@ -68,15 +67,15 @@ pipeline {
      //               }
       //      }
        // }
-       stage ('checkout') {
-        steps {
-            println("cloning the repo")
-            script {
-                k8s.gitclone()
+        stage ('Checkout'){
+                steps {
+                    println("Checkout: Cloning git repo for i27Shared Library *************")
+                    script {
+                        k8s.gitClone()
+                    }
+                }
             }
-        }
-       }
-       stage ('MavenBuild') {
+        stage ('MavenBuild') {
             when {
                 anyOf {
                     expression {
@@ -125,7 +124,7 @@ pipeline {
                     //def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                     //k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     //k8s.k8sdeploy("${K8S_DEV_FILE}", "${DEV_NAMESPACE}", docker_image)
-                    k8s.k8sHelmChartDeploy("$env.APPLICATION_NAME", )
+                    //k8s.k8sHelmChartDeploy("$env.APPLICATION_NAME", )
                     //echo "Deployed to DEV Environment Succesfully!!!"
                 }
                 
