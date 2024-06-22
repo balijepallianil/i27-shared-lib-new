@@ -1,0 +1,11 @@
+#Lets mention the values at application level for  helm charts because data will be changed for Microservice
+labelname: i27-Eureka
+deployname: i27-Eureka-dev
+replicas:
+  default: 1
+image:
+  name: xyz
+  tag: devtag
+targetPort: 8761
+
+

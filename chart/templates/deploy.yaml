@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployname }} #i27-eureka-dev
+spec:
+  replicas: {{ .Values.replicas.default }}  #1
+  selector:
+    matchLabels:
+      name: {{ .Values.labelname }} #i27-eureka
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.labelname }}  #i27-eureka
+    spec:
+      containers:
+      - image:  #registryname/reponame/appname:tagname
+        name: {{ .Values.labelname }}  #i27-eureka
+        # resources:
+#   requests: 
+#     memory: "128Mi"
+#     cpu: "250m"
+#   limits:
+#     memory: "256Mi"
+#     cpu: "500m"
+

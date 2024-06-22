@@ -16,12 +16,20 @@ class K8s {
         kubectl get nodes
         """
     }
-
+    // Kubernetes deployment
     def k8sdeploy(fileName, namespace , docker_image){
         jenkins.sh """
         echo "Executing K8S Deploy Method"
         sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName
         kubectl apply -f ./.cicd/$fileName -n $namespace
+        """
+    }
+
+    // Helm Deployment
+    def k8sHelmChartDeploy() {
+        jenkins.sh """
+        echo "************** Executing Helm Groovy Method ***************************
+        helm version
         """
     }
 }    
