@@ -14,31 +14,32 @@ pipeline {
             description: "Docker Build and push to registry"
         )
     }
-    tools{
-        jdk 'JDK-17'
-    }
-    environment {
-        APPLICATION_NAME = "${pipelineParams.appName}"
-        DOCKER_HUB = "docker.io/i27anilb3"
-        DOCKER_CREDS = credentials('docker_creds')
-    }
-    stage ('Docker Build and push') {
-        when {
-            anyOf {
-                expression {
-                params.dockerPush == 'yes'
+        tools{
+            jdk 'JDK-17'
+        }
+        environment {
+            APPLICATION_NAME = "${pipelineParams.appName}"
+            DOCKER_HUB = "docker.io/i27anilb3"
+            DOCKER_CREDS = credentials('docker_creds')
+        }
+        stages {
+            stage ('Docker Build and push') {
+                when {
+                    anyOf {
+                        expression {
+                            params.dockerPush == 'yes'
+                        }
+                    }
+                } 
+
+                steps {
+                    script  {
+                        k8s.mageBuildFrontEnd("${env.APPLICAION_NAME}")
+                    }
                 }
             }
-        } 
-
-        steps {
-            script  {
-                k8s.mageBuildFrontEnd("${env.APPLICAION_NAME}")
-            }
-
         }
-    }
-} 
+    } 
 
 }
 
