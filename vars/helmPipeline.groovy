@@ -125,7 +125,7 @@ pipeline {
             } 
             steps {
                 script {
-                    //imageValidation().call()
+                    imageValidation().call()
                     //def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                     k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     //k8s.k8sdeploy("${K8S_DEV_FILE}", "${DEV_NAMESPACE}", docker_image)
