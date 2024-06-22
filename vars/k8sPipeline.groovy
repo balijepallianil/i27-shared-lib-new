@@ -21,6 +21,18 @@ pipeline {
                 choices: 'no\nyes',
                 description: "Deploy app in DEV"
         )
+        choice (name: 'deployToTest',
+                choices: 'no\nyes',
+                description: "Deploy app in TEST"
+        )
+        choice (name: 'deployToStage',
+                choices: 'no\nyes',
+                description: "Deploy app in STAGE"
+        )
+        choice (name: 'deployToProd',
+                choices: 'no\nyes',
+                description: "Deploy app in PROD"
+        )
     }    
 
     tools{
@@ -41,10 +53,10 @@ pipeline {
         K8S_TST_FILE = "k8s_tst.yaml"
         K8S_STAGE_FILE = "k8s_stage.yaml"
         K8S_PROD_FILE = "k8s_prod.yaml"
-        DEV_NAMESPACE = "eureka-dev-ns"
-        TST_NAMESPACE = "cart-tst-ns"
-        STAGE_NAMESPACE = "cart-stage-ns"
-        PROD_NAMESPACE = "cart-prod-ns"
+        DEV_NAMESPACE = "i27-dev-ns"
+        TST_NAMESPACE = "i27-test-ns"
+        STAGE_NAMESPACE = "i27-stage-ns"
+        PROD_NAMESPACE = "i27-prod-ns"
     }
     stages{
     //   stage ('Authentication') {
@@ -102,7 +114,6 @@ pipeline {
                 script {
                     imageValidation().call()
                     def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
-                    //dockerDeploy('dev', '5761', '8761').call()
                     k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     k8s.k8sdeploy("${K8S_DEV_FILE}", "${DEV_NAMESPACE}", docker_image)
                     echo "Deployed to DEV Environment Succesfully!!!"
@@ -110,6 +121,63 @@ pipeline {
                 
             }
 
+        }
+        stage ('Deploy To Test') {
+            when {
+                anyOf {
+                    expression {
+                        params.deployToTest == 'yes'
+                    }
+                }
+            } 
+            steps {
+                script {
+                    imageValidation().call()
+                    def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+                    k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
+                    k8s.k8sdeploy("${K8S_TST_FILE}", "${TST_NAMESPACE}", docker_image)
+                    echo "Deployed to DEV Environment Succesfully!!!"
+                }
+                
+            }
+        }
+        stage ('Deploy To Stage') {
+            when {
+                anyOf {
+                    expression {
+                        params.deployToStage == 'yes'
+                    }
+                }
+            } 
+            steps {
+                script {
+                    imageValidation().call()
+                    def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+                    k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
+                    k8s.k8sdeploy("${K8S_STAGE_FILE}", "${STAGE_NAMESPACE}", docker_image)
+                    echo "Deployed to DEV Environment Succesfully!!!"
+                }
+                
+            }
+        }
+        stage ('Deploy To Prod') {
+            when {
+                anyOf {
+                    expression {
+                        params.deployToTest == 'yes'
+                    }
+                }
+            } 
+            steps {
+                script {
+                    imageValidation().call()
+                    def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+                    k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
+                    k8s.k8sdeploy("${K8S_PROD_FILE}", "${PROD_NAMESPACE}", docker_image)
+                    echo "Deployed to DEV Environment Succesfully!!!"
+                }
+                
+            }
         }
     }
 }
