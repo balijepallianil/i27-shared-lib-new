@@ -36,7 +36,6 @@ class K8s {
     }
 
     def gitclone() {
-        echo "*******clone the Shared Library repo*****"
         jenkins.sh """
         echo "*******clone the Shared Library repo*****"
         git clone -b main https://github.com/balijepallianil/i27-shared-lib-new.git
