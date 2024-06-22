@@ -34,7 +34,7 @@ pipeline {
 
                 steps {
                     script  {
-                        k8s.mageBuildFrontEnd("${env.APPLICAION_NAME}")
+                        k8s.imageBuildFrontEnd("${env.APPLICAION_NAME}")
                     }
                 }
             }
