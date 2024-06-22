@@ -26,12 +26,11 @@ class K8s {
     }
 
     // Helm Deployment
-    def k8sHelmChartDeploy(appName, env, helmChartPath, imageTag) {
+    def k8sHelmChartDeploy(appName, env, helmChartPath, imageTag){
         jenkins.sh """
         echo "************************ Executing Helm Groovy Method ************************"
         helm version
-        echo "*******installing the HELM chart"
-        helm install ${appName}-${env}-chart -f ./.cicd/k8s/values_${env}.yaml --set image.tag=${image.Tag} ${helmChartPath}
+        helm install ${appName}-${env}-chart -f ./.cicd/k8s/values_${env}.yaml --set image.tag=${imageTag} ${helmChartPath}
         """
     }
 
