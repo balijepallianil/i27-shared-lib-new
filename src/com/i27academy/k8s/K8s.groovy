@@ -31,7 +31,7 @@ class K8s {
         echo "************************ Executing Helm Groovy Method ************************"
         helm version
         echo "*******installing the HELM chart"
-        helm install ${appName}-${env}-chart -f ./.cicd/k8s/values_${env}.yaml --set image.tag=${image.Tag} ${GIT.COMMIT} ${helmChartPath}
+        helm install ${appName}-${env}-chart -f ./.cicd/k8s/values_${env}.yaml --set image.tag=${image.Tag} ${helmChartPath}
         """
     }
 

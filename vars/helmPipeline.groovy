@@ -57,6 +57,11 @@ pipeline {
         TST_NAMESPACE = "i27-test-ns"
         STAGE_NAMESPACE = "i27-stage-ns"
         PROD_NAMESPACE = "i27-prod-ns"
+        HELM_PATH = "${WORKSPACE}/i27-shared-lib-new/chart"
+        DEV_ENV = "dev"
+        TST_ENV = "test"
+        STAGE_ENV = "stage"
+        PROD_ENV = "prod"
     }
     stages {
     //   stage ('Authentication') {
@@ -122,9 +127,9 @@ pipeline {
                 script {
                     //imageValidation().call()
                     //def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
-                    //k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
+                    k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     //k8s.k8sdeploy("${K8S_DEV_FILE}", "${DEV_NAMESPACE}", docker_image)
-                    //k8s.k8sHelmChartDeploy("$env.APPLICATION_NAME", )
+                    k8s.k8sHelmChartDeploy("$env.APPLICATION_NAME", "${env.DEV_ENV}", "${env.HELM_PATH}", "${GIT.COMMIT}")
                     echo "Deployed to DEV Environment Succesfully!!!"
                 }
                 
@@ -188,6 +193,12 @@ pipeline {
                 
             }
         }
+        stage ('Clean'){
+            steps {
+                cleanWs()
+            }
+        }
+
     }
 }
 }
