@@ -136,7 +136,7 @@ pipeline {
                     def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                     k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     k8s.k8sdeploy("${K8S_TST_FILE}", "${TST_NAMESPACE}", docker_image)
-                    echo "Deployed to DEV Environment Succesfully!!!"
+                    echo "Deployed to test Environment Succesfully!!!"
                 }
                 
             }
@@ -155,7 +155,7 @@ pipeline {
                     def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                     k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     k8s.k8sdeploy("${K8S_STAGE_FILE}", "${STAGE_NAMESPACE}", docker_image)
-                    echo "Deployed to DEV Environment Succesfully!!!"
+                    echo "Deployed to stage Environment Succesfully!!!"
                 }
                 
             }
@@ -174,7 +174,7 @@ pipeline {
                     def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                     k8s.auth_login("${env.GKE_DEV_CLUSTER_NAME}", "${env.GKE_DEV_ZONE}", "${env.GKE_DEV_PROJECT}")
                     k8s.k8sdeploy("${K8S_PROD_FILE}", "${PROD_NAMESPACE}", docker_image)
-                    echo "Deployed to DEV Environment Succesfully!!!"
+                    echo "Deployed to PROD Environment Succesfully!!!"
                 }
                 
             }
