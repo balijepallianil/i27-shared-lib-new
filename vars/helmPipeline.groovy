@@ -71,7 +71,7 @@ pipeline {
                 steps {
                     println("Checkout: Cloning git repo for i27Shared Library *************")
                     script {
-                        k8s.gitClone()
+                        k8s.gitclone()
                     }
                 }
             }
