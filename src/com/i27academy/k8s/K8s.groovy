@@ -28,7 +28,7 @@ class K8s {
     // Helm Deployment
     def k8sHelmChartDeploy() {
         jenkins.sh """
-        echo "************** Executing Helm Groovy Method ***************************
+        echo "************************ Executing Helm Groovy Method ************************"
         helm version
         """
     }
