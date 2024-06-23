@@ -7,6 +7,7 @@ class React {
     }
     def k8sdeploy(fileName, namespace , docker_image){
         jenkins.sh """
+        ls -l
         echo "Executing K8S Deploy Method"
         sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName
         kubectl apply -f ./.cicd/$fileName -n $namespace
