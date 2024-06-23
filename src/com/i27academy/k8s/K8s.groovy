@@ -47,15 +47,4 @@ class K8s {
         git clone -b main https://github.com/balijepallianil/i27-shared-lib-new.git
         """
     }
-
-    def imageBuildFrontEnd(appName) {
-       jenkins.sh """
-        echo "**************************** Building Docker Image ****************************"
-        sh "docker build --force-rm --no-cachet ${env.DOCKER_HUB}/${appName}:${GIT_COMMIT} ./.cicd"
-        echo "********Docker login******"
-        sh "docker login -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}"
-        echo "********Docker Push******"
-        sh "docker push ${env.DOCKER_HUB}/${appName}:${GIT_COMMIT}"
-        """
-    }
 }    
