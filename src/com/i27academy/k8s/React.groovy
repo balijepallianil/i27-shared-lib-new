@@ -9,8 +9,8 @@ class React {
         jenkins.sh """
         ls -l
         echo "Executing K8S Deploy Method"
-        sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName
-        kubectl apply -f ./.cicd/$fileName -n $namespace
+        sed -i "s|DIT|${docker_image}|g" $fileName
+        kubectl apply -f $fileName -n $namespace
         """
     }
 }    
