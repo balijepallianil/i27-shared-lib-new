@@ -29,8 +29,19 @@ def call(Map pipelineParams) {
             DOCKER_CREDS = credentials('docker_creds')
             DEV_NAMESPACE = "i27-dev-ns"
             FILE_PATH = "${WORKSPACE}/k8s-dev.yaml"
+            VALUES_PATH = "${WORKSPACE}/values_dev.yaml"
+            DEV_ENV = "dev"
+            HELM_PATH = "${WORKSPACE}/i27-shared-lib-new/chart"
         }
         stages {
+            stage ('Checkout'){
+                steps {
+                    println("Checkout: Cloning git repo for i27Shared Library *************")
+                    script {
+                        k8s.gitclone()
+                    }
+                }
+            }
             stage ('Docker Build and push') {
                 when {
                     anyOf {
@@ -58,7 +69,8 @@ def call(Map pipelineParams) {
                         def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
                         echo "${docker_image}"
                         imageValidation().call()
-                        react.k8sdeploy("${env.FILE_PATH}", "${env.DEV_NAMESPACE}", docker_image)
+                        react.k8sHelmChartDeploy("${env.APPLICATION_NAME}", "${env.DEV_ENV}" , "${env.HELM_PATH}", "${GIT_COMMIT}", "${env.VALUES_PATH}")
+                        //react.k8sdeploy("${env.FILE_PATH}", "${env.DEV_NAMESPACE}", docker_image)
                     }
                 }
             }
