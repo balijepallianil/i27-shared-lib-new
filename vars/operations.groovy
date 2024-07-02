@@ -30,6 +30,14 @@ pipeline {
         PROD_NAMESPACE = "i27-prod-ns"
     }
     stages {
+        stage ('Checkout'){
+            steps {
+                    println("Checkout: Cloning git repo for i27Shared Library *************")
+                    script {
+                        k8s.gitClone()
+                    }
+            }
+        }
         stage ('Authentication') {
             steps {
               echo "Executing in GCP project"
@@ -41,7 +49,14 @@ pipeline {
         stage ('Create K8S Namespace'){
             steps {
                 script {
-                    k8s.namespace_creation("${params.NAMESPACE_NAME}", "${LABEL_NAME}")
+                    k8s.namespace_creation("${params.NAMESPACE_NAME}")
+                }
+            }
+        }
+        stage ('default netpol deny for NS'){
+            steps {
+                script {
+                    k8s.defaultdeny_netpol_cration("${params.NAMESPACE_NAME}", "${params.LABEL_NAME}", "${env.K8S_DEV_FILE}")
                 }
             }
         }

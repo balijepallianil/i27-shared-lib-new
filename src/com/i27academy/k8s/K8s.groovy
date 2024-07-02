@@ -47,7 +47,7 @@ class K8s {
         git clone -b main https://github.com/balijepallianil/i27-shared-lib-new.git
         """
     }
-    def namespace_creation(namespace_name, label_name){
+    def namespace_creation(namespace_name){
         jenkins.sh """#!/bin/bash
         # Script to create namespace, if doesnot exists
         #!/bin/bash
@@ -59,7 +59,7 @@ class K8s {
         exit 0
         else
         echo "Your namespace '${namespace_name}' doesnot exists, so creating it!!!!!!"
-        if kubectl create ns '${namespace_name}' label='${label_name}' &> /dev/null; then
+        if kubectl create ns '${namespace_name}' &> /dev/null; then
           echo "Your namespace '${namespace_name}' has created succesfully"
           exit 0
         else 
@@ -69,4 +69,13 @@ class K8s {
         fi
         """
     }
+    def defaultdeny_netpol_cration(namespace_name, label_name, fileName)
+    jenkins.sh """#!/bin/bash
+    # Script to create networkpolicy
+    #!/bin/bash
+    echo "Network Policy creating ${namespace_name}"
+    # label the Namespace
+    kubectl label ns '${namespace_name}' namespace= ${label_name}
+    kubectl apply -f $fileName
+    """
 }    
