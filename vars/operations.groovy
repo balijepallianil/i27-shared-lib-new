@@ -10,6 +10,7 @@ pipeline {
     }
     parameters {
         string(name: 'NAMESPACE_NAME', description: "Enter the name of the namespace, you want to create")
+        string(name: 'LABEL_NAME', description: "Enter the name of the label, you want to create")
     }
     environment {
         APPLICATION_NAME = "${pipelineParams.appName}"
@@ -40,7 +41,7 @@ pipeline {
         stage ('Create K8S Namespace'){
             steps {
                 script {
-                    k8s.namespace_creation("${params.NAMESPACE_NAME}")
+                    k8s.namespace_creation("${params.NAMESPACE_NAME}", "${LABEL_NAME}")
                 }
             }
         }
