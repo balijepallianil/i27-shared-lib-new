@@ -20,7 +20,7 @@ pipeline {
         GKE_DEV_CLUSTER_NAME = "cart-cluster"
         GKE_DEV_ZONE = "us-west1-a"
         GKE_DEV_PROJECT = "glass-approach-423807-a5"
-        K8S_DEV_FILE = "k8s_dev.yaml"                 
+        K8S_DEV_FILE = "${WORKSPACE}/i27-shared-lib-new/operations/netpol_default.yaml"                
         K8S_TST_FILE = "k8s_tst.yaml"
         K8S_STAGE_FILE = "k8s_stage.yaml"
         K8S_PROD_FILE = "k8s_prod.yaml"
