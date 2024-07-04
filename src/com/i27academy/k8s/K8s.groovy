@@ -74,9 +74,9 @@ class K8s {
     jenkins.sh """#!/bin/bash
     # Script to create networkpolicy
     #!/bin/bash
-    echo "Network Policy creating ${namespace_name}"
+    echo "Default Network Policy creating for the NAMESPACE ${namespace_name}"
     # label the Namespace
-    kubectl label ns '${namespace_name}' namespace= ${label_name}
+    kubectl label ns '${namespace_name}' namespace=${label_name}
     sed -i "s|NS|${namespace_name}|g" && "s|LABELNS|${label_name}|g" $fileName
     kubectl apply -f $fileName
     """
