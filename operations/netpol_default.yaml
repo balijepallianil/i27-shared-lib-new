@@ -18,6 +18,4 @@ spec:
     - namespaceSelector:
         matchLabels:
           namespace: LN
-    - ports:
-      - port: 53
-        protocol: TCP
+
