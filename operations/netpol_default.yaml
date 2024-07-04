@@ -14,9 +14,10 @@ spec:
         matchLabels:
           namespace: LABELNS
   egress:
-  - namespaceSelector:
-      matchLabels:
-        namespace: LABELNS
-  - ports:
-    - protocol: TCP
-      port: 53
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          namespace: LABELNS
+    - ports:
+      - protocol: TCP
+        port: 53
