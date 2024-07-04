@@ -78,7 +78,7 @@ class K8s {
     # label the Namespace
     kubectl label ns '${namespace_name}' namespace=${label_name}
     sed -i "s|NS|${namespace_name}|g" $fileName
-    sed -i "s|LABELNS|${label_name}|g" $fileName
+    sed -i "s|LN|${label_name}|g" $fileName
     cat $fileName
     kubectl apply -f $fileName
     """

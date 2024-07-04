@@ -12,12 +12,12 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          namespace: LABELNS
+          namespace: LN
   egress:
   - to:
     - namespaceSelector:
         matchLabels:
-          namespace: LABELNS
+          namespace: LN
     - ports:
       - port: 53
         protocol: TCP
