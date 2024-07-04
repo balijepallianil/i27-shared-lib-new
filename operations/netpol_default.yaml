@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: network-policy-deny
+  namespace: NS
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          namespace: LABELNS
+  egress:
+  - namespaceSelector:
+      matchLabels:
+        namespace: LABELNS
+  - ports:
+    - protocol: TCP
+      port: 53

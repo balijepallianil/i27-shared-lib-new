@@ -77,6 +77,7 @@ class K8s {
     echo "Network Policy creating ${namespace_name}"
     # label the Namespace
     kubectl label ns '${namespace_name}' namespace= ${label_name}
+    sed -i "s|NS|${dnamespace_name}|g" "s|LABELNS|${label_name}|g" $fileName
     kubectl apply -f $fileName
     """
     }
